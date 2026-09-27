@@ -357,11 +357,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     ui->lineEditMultiplayerPort->setValidator(new QIntValidator(0, 65535, this));
     ui->lineEditPacketSaveMaxFilesize->setValidator(new QIntValidator(0, INT_MAX, this));
 
-    // Set other input masks
-    ui->lineEditCommandChar->setValidator(
-        // Matches any printable ASCII character (from space to tilde)
-        new QRegularExpressionValidator(QRegularExpression("[ -~]"), this));
-
     // Connect the raw mouse input checkbox
     connect(ui->checkBoxRawMouseInput, &QCheckBox::checkStateChanged, this, [this]() {
         bool isChecked = ui->checkBoxRawMouseInput->isChecked();
@@ -672,7 +667,6 @@ void SettingsDialog::loadSettings()
     ui->comboBoxScreenshots->setCurrentIndex(
         ui->comboBoxScreenshots->findData(Settings::getKfxSetting("SCREENSHOT").toString()));
     ui->lineEditGameturns->setText(Settings::getLauncherSetting("GAME_PARAM_FPS").toString());
-    ui->lineEditCommandChar->setText(Settings::getKfxSetting("COMMAND_CHAR").toString());
     ui->checkBoxDeltaTime->setChecked(Settings::getKfxSetting("DELTA_TIME") == true);
     ui->checkBoxFreezeGameNoFocus->setChecked(Settings::getKfxSetting("FREEZE_GAME_ON_FOCUS_LOST")
                                               == true);
@@ -1093,12 +1087,6 @@ void SettingsDialog::saveSettings()
         Settings::setLauncherSetting("GAME_PARAM_NO_INTRO", ui->checkBoxDisplayIntro->isChecked() == false);
         Settings::setKfxSetting("DISABLE_SPLASH_SCREENS", ui->checkBoxDisplaySplashScreens->isChecked() == false);
     }
-
-    // Make sure command char is not empty
-    if(ui->lineEditCommandChar->text().isEmpty() == true){
-        ui->lineEditCommandChar->setText("!");
-    }
-    Settings::setKfxSetting("COMMAND_CHAR", ui->lineEditCommandChar->text());
 
     // Packet save
     QString packetSaveFileName = ui->lineEditPackSaveFileName->text();
