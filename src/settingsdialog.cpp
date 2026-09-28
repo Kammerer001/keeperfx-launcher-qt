@@ -177,6 +177,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     if(KfxVersion::hasFunctionality("packetsave_max_filesize") == false){
         ui->labelPacketSaveMaxFilesize->setDisabled(true);
         ui->lineEditPacketSaveMaxFilesize->setDisabled(true);
+        ui->labelPacketSaveMaxFilesizeMeasurementUnit->setDisabled(true);
     }
 
     if (KfxVersion::hasFunctionality("viewport_mode") == true) {
@@ -423,6 +424,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
         if(KfxVersion::hasFunctionality("packetsave_max_filesize") == true){
             ui->labelPacketSaveMaxFilesize->setDisabled(!isChecked);
             ui->lineEditPacketSaveMaxFilesize->setDisabled(!isChecked);
+            ui->labelPacketSaveMaxFilesizeMeasurementUnit->setDisabled(!isChecked);
         }
     });
 
@@ -683,6 +685,7 @@ void SettingsDialog::loadSettings()
         ui->lineEditPacketSaveMaxFilesize->setText(Settings::getKfxSetting("PACKETSAVE_MAX_SIZE").toString());
         ui->labelPacketSaveMaxFilesize->setDisabled(!isPacketSaveEnabled);
         ui->lineEditPacketSaveMaxFilesize->setDisabled(!isPacketSaveEnabled);
+        ui->labelPacketSaveMaxFilesizeMeasurementUnit->setDisabled(!isPacketSaveEnabled);
     }
 
     ui->checkBoxExitOnLuaError->setChecked(Settings::getKfxSetting("EXIT_ON_LUA_ERROR") == true);
