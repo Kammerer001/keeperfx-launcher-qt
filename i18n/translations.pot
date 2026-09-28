@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 10:48+0200\n"
+"POT-Creation-Date: 2026-09-28 10:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1033,6 +1033,11 @@ msgid ""
 "(0 = unlimited)"
 msgstr ""
 
+#. Shorthand for 'kibibyte'
+msgctxt "SettingsDialog|Measurement Unit Label"
+msgid "KiB"
+msgstr ""
+
 msgctxt "SettingsDialog|Checkbox Toggle"
 msgid "Exit on LUA error"
 msgstr ""
@@ -1129,8 +1134,18 @@ msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Creature flower size"
 msgstr ""
 
+#. Shorthand for 'pixel(s)'
+msgctxt "SettingsDialog|Measurement Unit Label"
+msgid "px"
+msgstr ""
+
 msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Hand size"
+msgstr ""
+
+#. Shorthand for 'percent'
+msgctxt "SettingsDialog|Measurement Unit Label"
+msgid "%"
 msgstr ""
 
 msgctxt "SettingsDialog|Textinput Title Label"
@@ -1490,6 +1505,11 @@ msgstr ""
 
 msgctxt "SettingsDialog|Game Release Channel"
 msgid "Alpha"
+msgstr ""
+
+#, qt-format
+msgctxt "SettingsDialog|Mouse Sensitivity Slider Percentage Label"
+msgid "%1%"
 msgstr ""
 
 msgctxt "SettingsDialog|Link"

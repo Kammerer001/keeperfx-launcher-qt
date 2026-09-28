@@ -364,7 +364,9 @@ SettingsDialog::SettingsDialog(QWidget *parent)
         ui->labelMouseSensPercentage->setEnabled(!isChecked);
         ui->labelMouseSens->setEnabled(!isChecked);
         ui->horizontalSliderMouseSens->setValue(isChecked ? 1 : 100);
-        ui->labelMouseSensPercentage->setText(isChecked ? "" : QString("%1%").arg(ui->horizontalSliderMouseSens->value()));
+        ui->labelMouseSensPercentage->setText(isChecked ? "" :
+            QString(tr("%1%", "Mouse Sensitivity Slider Percentage Label")).arg(ui->horizontalSliderMouseSens->value())
+        );
     });
 
     // Connect the max zoom slider to update the label when moved

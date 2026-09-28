@@ -341,7 +341,7 @@ Note: This is not a percentage</string>
                  <item>
                   <widget class="QLabel" name="label">
                    <property name="text">
-                    <string notr="true">KiB</string>
+                    <string comment="Measurement Unit Label" extracomment="Shorthand for 'kibibyte'">KiB</string>
                    </property>
                   </widget>
                  </item>
@@ -768,7 +768,7 @@ Note: This is not a percentage</string>
                     <item>
                      <widget class="QLabel" name="label_4">
                       <property name="text">
-                       <string notr="true">px</string>
+                       <string comment="Measurement Unit Label" extracomment="Shorthand for 'pixel(s)'">px</string>
                       </property>
                      </widget>
                     </item>
@@ -803,7 +803,7 @@ Note: This is not a percentage</string>
                     <item>
                      <widget class="QLabel" name="label_3">
                       <property name="text">
-                       <string notr="true">%</string>
+                       <string comment="Measurement Unit Label" extracomment="Shorthand for 'percent'">%</string>
                       </property>
                      </widget>
                     </item>
@@ -838,7 +838,7 @@ Note: This is not a percentage</string>
                     <item>
                      <widget class="QLabel" name="label_2">
                       <property name="text">
-                       <string notr="true">%</string>
+                       <string comment="Measurement Unit Label" extracomment="Shorthand for 'percent'">%</string>
                       </property>
                      </widget>
                     </item>
