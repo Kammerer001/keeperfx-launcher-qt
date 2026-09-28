@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 10:48+0200\n"
-"PO-Revision-Date: 2026-09-27 11:02+0200\n"
+"POT-Creation-Date: 2026-09-28 10:39+0200\n"
+"PO-Revision-Date: 2026-09-28 10:48+0200\n"
 "Last-Translator: Yani <yani@keeperfx.net>\n"
 "Language-Team: Dutch <http://translate.keeperfx.net/projects/keeperfx/"
 "launcher/nl/>\n"
@@ -1173,6 +1173,11 @@ msgstr ""
 "Packetsave max. bestandsgrootte\n"
 "(0 = onbeperkt)"
 
+#. Shorthand for 'kibibyte'
+msgctxt "SettingsDialog|Measurement Unit Label"
+msgid "KiB"
+msgstr "KiB"
+
 msgctxt "SettingsDialog|Checkbox Toggle"
 msgid "Exit on LUA error"
 msgstr "Afsluiten bij LUA-fout"
@@ -1274,9 +1279,19 @@ msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Creature flower size"
 msgstr "Wezensbloemgrootte"
 
+#. Shorthand for 'pixel(s)'
+msgctxt "SettingsDialog|Measurement Unit Label"
+msgid "px"
+msgstr "px"
+
 msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Hand size"
 msgstr "Hand grootte"
+
+#. Shorthand for 'percent'
+msgctxt "SettingsDialog|Measurement Unit Label"
+msgid "%"
+msgstr "%"
 
 msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Select box line size"
@@ -1657,6 +1672,11 @@ msgstr "Stabiel (Standaard)"
 msgctxt "SettingsDialog|Game Release Channel"
 msgid "Alpha"
 msgstr "Alpha"
+
+#, qt-format
+msgctxt "SettingsDialog|Mouse Sensitivity Slider Percentage Label"
+msgid "%1%"
+msgstr "%1%"
 
 msgctxt "SettingsDialog|Link"
 msgid "Set to default server"
@@ -2350,12 +2370,6 @@ msgstr ""
 #~ msgctxt "UpdateDialog|"
 #~ msgid "Done!"
 #~ msgstr "Klaar!"
-
-#, fuzzy
-#~| msgid "0%"
-#~ msgctxt "SettingsDialog|"
-#~ msgid "0%"
-#~ msgstr "0%"
 
 #, fuzzy
 #~| msgid "5556"
