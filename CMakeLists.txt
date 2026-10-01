@@ -39,11 +39,20 @@ endif()
 # For GCC/Clang + GNU ld (Linux)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
-    # Check for Mold linker and use it if available
-    find_program(MOLD_PATH mold)
-    if(MOLD_PATH)
-        message(STATUS "Mold linker found at: ${MOLD_PATH}")
-        add_link_options("-fuse-ld=mold")
+    if(WIN32)
+        # Use LLD for Windows cross-compilation
+        find_program(LLD_PATH lld)
+        if(LLD_PATH)
+            message(STATUS "LLD linker found at: ${LLD_PATH}")
+            add_link_options("-fuse-ld=lld")
+        endif()
+    else()
+        # Use Mold for Linux builds
+        find_program(MOLD_PATH mold)
+        if(MOLD_PATH)
+            message(STATUS "Mold linker found at: ${MOLD_PATH}")
+            add_link_options("-fuse-ld=mold")
+        endif()
     endif()
 
     # Discard unused sections
