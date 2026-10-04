@@ -34,7 +34,7 @@
 //#include "modmanager.h"
 #include "modmanagerdialog.h"
 #include "newsarticlewidget.h"
-#include "runpacketfiledialog.h"
+#include "loadreplaydialog.h"
 #include "savefile.h"
 #include "settings.h"
 #include "settingsdialog.h"
@@ -417,16 +417,18 @@ void LauncherMainWindow::setupPlayExtraMenu()
         dialog.exec();
     });*/
 
-    // Run packetsave action
-    menu->addAction(tr("Run packetfile", "Menu"), [this]() {
-        qDebug() << "Run packetsave selected!";
-        // Open the dialog
-        RunPacketFileDialog dialog(this);
-        if (dialog.exec() == QDialog::Accepted) {
-            // Start the game
-            startGame(Game::StartType::LOAD_PACKETSAVE, dialog.getPacketFileName());
-        }
-    });
+    // Load replay action
+    if (KfxVersion::hasFunctionality("replays") == true) {
+        menu->addAction(tr("Load Replay...", "Menu"), [this]() {
+            qDebug() << "Load Replay selected!";
+            // Open the dialog
+            LoadReplayDialog dialog(this);
+            if (dialog.exec() == QDialog::Accepted) {
+                // Start the game
+                startGame(Game::StartType::LOAD_REPLAY, dialog.getReplayFileName());
+            }
+        });
+    }
 
     // Start without mods action
     if (KfxVersion::hasFunctionality("start_without_mods_param") == true) {

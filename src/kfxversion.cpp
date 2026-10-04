@@ -44,7 +44,7 @@ const QMap<QString, QPair<QString, QString>> KfxVersion::versionFunctionaltyMap 
     {"opengl_renderer",                         {"",      "1.4.0.5389"}},
     {"viewport_mode",                           {"",      "1.4.0.5391"}},
     {"map_fade_animation",                      {"",      "1.4.0.5415"}},
-    {"packetsave_max_filesize",                 {"",      "1.4.0.5416"}},
+    {"replays",                                 {"",      "1.4.0.5464"}},
 
 
 
@@ -54,7 +54,6 @@ const QMap<QString, QPair<QString, QString>> KfxVersion::versionFunctionaltyMap 
     // Not yet supported
     {"start_campaign_directly", {"", ""}},     // https://github.com/dkfans/keeperfx/issues/3924
     {"load_save_directly", {"", ""}},          // TODO: https://github.com/dkfans/keeperfx/issues/3481
-    {"packetsave_while_packetload", {"", ""}}, // TODO
 
     // Use configuration files in the user appdata
     // Temporary disabled until KeeperFX can also handle this

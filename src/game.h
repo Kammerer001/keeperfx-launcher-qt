@@ -17,7 +17,7 @@ public:
         MAP,
         CAMPAIGN,
         LOAD_SAVE,
-        LOAD_PACKETSAVE,
+        LOAD_REPLAY,
         START_WITHOUT_MODS,
     };
 

@@ -174,10 +174,16 @@ SettingsDialog::SettingsDialog(QWidget *parent)
         ui->anchorMatchmakingDefaultServer->setDisabled(true);
     }
 
-    if(KfxVersion::hasFunctionality("packetsave_max_filesize") == false){
-        ui->labelPacketSaveMaxFilesize->setDisabled(true);
-        ui->lineEditPacketSaveMaxFilesize->setDisabled(true);
-        ui->labelPacketSaveMaxFilesizeMeasurementUnit->setDisabled(true);
+    if(KfxVersion::hasFunctionality("replays") == false){
+        ui->labelReplayMaxFilesize->setDisabled(true);
+        ui->spinBoxReplayMaxFilesize->setDisabled(true);
+        ui->labelReplayFilesizeMeasurementUnit->setDisabled(true);
+        ui->labelMaxReplaysCampaign->setDisabled(true);
+        ui->spinBoxMaxReplaysCampaign->setDisabled(true);
+        ui->labelMaxReplaysFreeplay->setDisabled(true);
+        ui->spinBoxMaxReplaysFreeplay->setDisabled(true);
+        ui->labelMaxReplaysMultiplayer->setDisabled(true);
+        ui->spinBoxMaxReplaysMultiplayer->setDisabled(true);
     }
 
     if (KfxVersion::hasFunctionality("viewport_mode") == true) {
@@ -342,9 +348,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
         ui->horizontalSliderMouseSens->setMaximum(1000);
     }
 
-    // Load the settings
-    loadSettings();
-
     // Set input masks (number only textboxes)
     ui->lineEditApiPort->setValidator(new QIntValidator(0, 65535, this));
     ui->lineEditCreatureFlowerSize->setValidator(new QIntValidator(0, 512, this));
@@ -356,7 +359,14 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     ui->lineEditNeutralFlashRate->setValidator(new QIntValidator(0, 65535, this));
     ui->lineEditUpdateInterval->setValidator(new QIntValidator(0, 365, this));
     ui->lineEditMultiplayerPort->setValidator(new QIntValidator(0, 65535, this));
-    ui->lineEditPacketSaveMaxFilesize->setValidator(new QIntValidator(0, INT_MAX, this));
+
+    ui->spinBoxReplayMaxFilesize->setRange(0, INT_MAX);
+    ui->spinBoxMaxReplaysCampaign->setRange(0, INT_MAX);
+    ui->spinBoxMaxReplaysFreeplay->setRange(0, INT_MAX);
+    ui->spinBoxMaxReplaysMultiplayer->setRange(0, INT_MAX);
+
+    // Load the settings
+    loadSettings();
 
     // Connect the raw mouse input checkbox
     connect(ui->checkBoxRawMouseInput, &QCheckBox::checkStateChanged, this, [this]() {
@@ -415,17 +425,18 @@ SettingsDialog::SettingsDialog(QWidget *parent)
         ui->comboBoxAtmoVolume->setDisabled(!isChecked);
     });
 
-    // Connect the API enabled checkbox
-    connect(ui->checkBoxPacketSaveEnabled, &QCheckBox::checkStateChanged, this, [this]() {
-        bool isChecked = ui->checkBoxPacketSaveEnabled->isChecked();
-        ui->labelPacketSaveFileName->setDisabled(!isChecked);
-        ui->lineEditPackSaveFileName->setDisabled(!isChecked);
-
-        if(KfxVersion::hasFunctionality("packetsave_max_filesize") == true){
-            ui->labelPacketSaveMaxFilesize->setDisabled(!isChecked);
-            ui->lineEditPacketSaveMaxFilesize->setDisabled(!isChecked);
-            ui->labelPacketSaveMaxFilesizeMeasurementUnit->setDisabled(!isChecked);
-        }
+    // Connect the replays enabled checkbox
+    connect(ui->checkboxSaveReplaysEnabled, &QCheckBox::checkStateChanged, this, [this]() {
+        bool isChecked = ui->checkboxSaveReplaysEnabled->isChecked();
+        ui->labelReplayMaxFilesize->setEnabled(isChecked);
+        ui->spinBoxReplayMaxFilesize->setEnabled(isChecked);
+        ui->labelReplayFilesizeMeasurementUnit->setEnabled(isChecked);
+        ui->labelMaxReplaysCampaign->setEnabled(isChecked);
+        ui->spinBoxMaxReplaysCampaign->setEnabled(isChecked);
+        ui->labelMaxReplaysFreeplay->setEnabled(isChecked);
+        ui->spinBoxMaxReplaysFreeplay->setEnabled(isChecked);
+        ui->labelMaxReplaysMultiplayer->setEnabled(isChecked);
+        ui->spinBoxMaxReplaysMultiplayer->setEnabled(isChecked);
     });
 
     // Connect 'Unlock cursor from game window' checkbox (used to be altinput but is not 'CAPTURE_CURSOR')
@@ -675,17 +686,25 @@ void SettingsDialog::loadSettings()
     ui->checkBoxFreezeGameNoFocus->setChecked(Settings::getKfxSetting("FREEZE_GAME_ON_FOCUS_LOST")
                                               == true);
 
-    bool isPacketSaveEnabled = Settings::getLauncherSetting("GAME_PARAM_PACKET_SAVE_ENABLED") == true;
-    ui->checkBoxPacketSaveEnabled->setChecked(isPacketSaveEnabled);
-    ui->labelPacketSaveFileName->setDisabled(!isPacketSaveEnabled);
-    ui->lineEditPackSaveFileName->setDisabled(!isPacketSaveEnabled);
-    ui->lineEditPackSaveFileName->setText(Settings::getLauncherSetting("GAME_PARAM_PACKET_SAVE_FILE_NAME").toString());
-
-    if(KfxVersion::hasFunctionality("packetsave_max_filesize") == true){
-        ui->lineEditPacketSaveMaxFilesize->setText(Settings::getKfxSetting("PACKETSAVE_MAX_SIZE").toString());
-        ui->labelPacketSaveMaxFilesize->setDisabled(!isPacketSaveEnabled);
-        ui->lineEditPacketSaveMaxFilesize->setDisabled(!isPacketSaveEnabled);
-        ui->labelPacketSaveMaxFilesizeMeasurementUnit->setDisabled(!isPacketSaveEnabled);
+    if(KfxVersion::hasFunctionality("replays") == true){
+        bool saveReplaysEnabled = Settings::getKfxSetting("AUTOMATIC_REPLAYS") == true;
+        ui->checkboxSaveReplaysEnabled->setChecked(saveReplaysEnabled);
+        QStringList maxReplayList = Settings::getKfxSetting("MAX_REPLAYS").toString().split(" ");
+        ui->spinBoxMaxReplaysCampaign->setValue(maxReplayList[0].toInt());
+        ui->spinBoxMaxReplaysFreeplay->setValue(maxReplayList[1].toInt());
+        ui->spinBoxMaxReplaysMultiplayer->setValue(maxReplayList[2].toInt());
+        ui->spinBoxReplayMaxFilesize->setValue(Settings::getKfxSetting("REPLAY_MAX_SIZE").toInt());
+        if(saveReplaysEnabled == false) {
+            ui->labelReplayMaxFilesize->setDisabled(true);
+            ui->spinBoxReplayMaxFilesize->setDisabled(true);
+            ui->labelReplayFilesizeMeasurementUnit->setDisabled(true);
+            ui->labelMaxReplaysCampaign->setDisabled(true);
+            ui->labelMaxReplaysFreeplay->setDisabled(true);
+            ui->labelMaxReplaysMultiplayer->setDisabled(true);
+            ui->spinBoxMaxReplaysCampaign->setDisabled(true);
+            ui->spinBoxMaxReplaysFreeplay->setDisabled(true);
+            ui->spinBoxMaxReplaysMultiplayer->setDisabled(true);
+        }
     }
 
     ui->checkBoxExitOnLuaError->setChecked(Settings::getKfxSetting("EXIT_ON_LUA_ERROR") == true);
@@ -1065,7 +1084,6 @@ void SettingsDialog::saveSettings()
     Settings::setLauncherSetting("GAME_PARAM_FPS", ui->lineEditGameturns->text());
     Settings::setKfxSetting("DELTA_TIME", ui->checkBoxDeltaTime->isChecked());
     Settings::setKfxSetting("FREEZE_GAME_ON_FOCUS_LOST", ui->checkBoxFreezeGameNoFocus->isChecked());
-    Settings::setLauncherSetting("GAME_PARAM_PACKET_SAVE_ENABLED", ui->checkBoxPacketSaveEnabled->isChecked() == true);
     Settings::setKfxSetting("EXIT_ON_LUA_ERROR", ui->checkBoxExitOnLuaError->isChecked());
     Settings::setKfxSetting("FLEE_BUTTON_DEFAULT", ui->checkBoxAutoEnableFlee->isChecked());
     Settings::setKfxSetting("IMPRISON_BUTTON_DEFAULT", ui->checkBoxAutoEnableImprison->isChecked());
@@ -1093,19 +1111,15 @@ void SettingsDialog::saveSettings()
         Settings::setKfxSetting("DISABLE_SPLASH_SCREENS", ui->checkBoxDisplaySplashScreens->isChecked() == false);
     }
 
-    // Packet save
-    QString packetSaveFileName = ui->lineEditPackSaveFileName->text();
-    packetSaveFileName = packetSaveFileName.trimmed().replace(" ", "_");
-    if (packetSaveFileName.isEmpty()) {
-        packetSaveFileName = "packetsave.pck";
-    }
-    if (packetSaveFileName.toLower().endsWith(".pck") == false) {
-        packetSaveFileName = packetSaveFileName + ".pck";
-    }
-    Settings::setLauncherSetting("GAME_PARAM_PACKET_SAVE_FILE_NAME", packetSaveFileName);
-
-    if(KfxVersion::hasFunctionality("packetsave_max_filesize") == true){
-        Settings::setKfxSetting("PACKETSAVE_MAX_SIZE", ui->lineEditPacketSaveMaxFilesize->text());
+    // Replays
+    if(KfxVersion::hasFunctionality("replays") == true){
+        Settings::setKfxSetting("AUTOMATIC_REPLAYS", ui->checkboxSaveReplaysEnabled->isChecked() == true);
+        Settings::setKfxSetting("REPLAY_MAX_SIZE", ui->spinBoxReplayMaxFilesize->value());
+        Settings::setKfxSetting("MAX_REPLAYS", QString("%1 %2 %3")
+            .arg(ui->spinBoxMaxReplaysCampaign->value())
+            .arg(ui->spinBoxMaxReplaysFreeplay->value())
+            .arg(ui->spinBoxMaxReplaysMultiplayer->value())
+        );
     }
 
     Settings::setLauncherSetting("EXTRA_GAME_LAUNCH_OPTIONS", ui->lineEditLaunchOptions->text());

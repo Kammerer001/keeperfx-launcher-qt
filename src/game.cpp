@@ -41,8 +41,8 @@ QString Game::getStringFromStartType(StartType startType)
         return "Campaign";
     case LOAD_SAVE:
         return "Load Save";
-    case LOAD_PACKETSAVE:
-        return "Load Packetsave";
+    case LOAD_REPLAY:
+        return "Load replay";
     }
     return "Unknown start type";
 }
@@ -81,8 +81,8 @@ bool Game::start(StartType startType, QVariant data1, QVariant data2, QVariant d
         params << "-connect" << QString(data1.toString() + ":" + data2.toString());
     }
 
-    // Run packetsave file
-    if (startType == StartType::LOAD_PACKETSAVE) {
+    // Load replay file
+    if (startType == StartType::LOAD_REPLAY) {
         params << "-packetload" << QString(data1.toString());
     }
 

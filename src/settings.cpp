@@ -49,8 +49,6 @@ QMap<QString, QVariant> Settings::defaultLauncherSettingsMap = {
     {"GAME_PARAM_FPS", "20"},
     {"GAME_PARAM_HUMAN_PLAYER", "0"},
     {"GAME_PARAM_VID_SMOOTH", false},
-    {"GAME_PARAM_PACKET_SAVE_ENABLED", false},
-    {"GAME_PARAM_PACKET_SAVE_FILE_NAME", "packetsave.pck"},
 };
 
 QMap<QString, QString> Settings::gameSettingsParameterMap = {
@@ -61,7 +59,6 @@ QMap<QString, QString> Settings::gameSettingsParameterMap = {
     // {"GAME_PARAM_ALT_INPUT", "-altinput"}, // Hardcoded
     // {"GAME_PARAM_FPS", "-fps %d"}, // Hardcoded
     // {"GAME_PARAM_HUMAN_PLAYER", "-human %d"}, // Hardcoded
-    // {"GAME_PARAM_PACKET_SAVE_FILE_NAME", "-packetsave %s"}, // Hardcoded
     // {"GAME_PARAM_NO_INTRO", "-nointro"}, // Hardcoded
 };
 
@@ -325,14 +322,6 @@ QStringList Settings::getGameSettingsParameters()
     QString humanPlayer = Settings::getLauncherSetting("GAME_PARAM_HUMAN_PLAYER").toString();
     if (humanPlayer != Settings::defaultLauncherSettingsMap["GAME_PARAM_HUMAN_PLAYER"]) {
         paramList << "-human" << humanPlayer;
-    }
-
-    // Add packetsave
-    if (Settings::getLauncherSetting("GAME_PARAM_PACKET_SAVE_ENABLED") == true) {
-        QString packetSaveFileName = Settings::getLauncherSetting("GAME_PARAM_PACKET_SAVE_FILE_NAME").toString();
-        if (packetSaveFileName.isEmpty() == false) {
-            paramList << "-packetsave" << packetSaveFileName;
-        }
     }
 
     // Add old -altinput
