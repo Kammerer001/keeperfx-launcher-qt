@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 10:39+0200\n"
+"POT-Creation-Date: 2026-10-04 18:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -776,7 +776,7 @@ msgid "Direct connect (MP)"
 msgstr ""
 
 msgctxt "LauncherMainWindow|Menu"
-msgid "Run packetfile"
+msgid "Load Replay..."
 msgstr ""
 
 msgctxt "LauncherMainWindow|Menu"
@@ -868,6 +868,60 @@ msgctxt "LauncherMainWindow|Window Title"
 msgid "KeeperFX Launcher"
 msgstr ""
 
+msgctxt "LoadReplayDialog|Dialog Title"
+msgid "Load Replay"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Header"
+msgid "Load Replay"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Information Label"
+msgid ""
+"Select a replay to load. KeeperFX will be started and the replay will "
+"automatically start playing."
+msgstr ""
+
+msgctxt "LoadReplayDialog|Button"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Button"
+msgid "Start"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgid "Type"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgid "Name"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgid "Size"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgid "Date"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Type"
+msgid "Unknown"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Type"
+msgid "Freeplay"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Type"
+msgid "Campaign"
+msgstr ""
+
+msgctxt "LoadReplayDialog|Replay Type"
+msgid "Multiplayer"
+msgstr ""
+
 msgctxt "ModManagerDialog|"
 msgid "KeeperFX Mod Manager"
 msgstr ""
@@ -876,30 +930,36 @@ msgctxt "ModManagerDialog|Header"
 msgid "Mod Manager"
 msgstr ""
 
-msgctxt "RunPacketFileDialog|Dialog Title"
-msgid "Run Packetfile"
-msgstr ""
-
-msgctxt "RunPacketFileDialog|Header"
-msgid "Run Packetfile"
-msgstr ""
-
-msgctxt "RunPacketFileDialog|Information Label"
+msgctxt "ModManagerDialog|Info text"
 msgid ""
-"Select a packetfile to replay. KeeperFX will be started and the packetfile "
-"will automatically start playing."
+"Mods are loaded from top to bottom and you can decide when a mod gets "
+"loaded. It can be after the KeeperFX base game, after the campaign specific "
+"changes, or after the map specific changes. Move them up or down to change "
+"the order."
 msgstr ""
 
-msgctxt "RunPacketFileDialog|Notice Label"
-msgid "Packetsave will be disabled when loading a packetfile."
+msgctxt "ModManagerDialog|"
+msgid "After Base game"
 msgstr ""
 
-msgctxt "RunPacketFileDialog|Button"
-msgid "Cancel"
+msgctxt "ModManagerDialog|"
+msgid "<PLACEHOLDER>"
 msgstr ""
 
-msgctxt "RunPacketFileDialog|Button"
-msgid "Start"
+msgctxt "ModManagerDialog|"
+msgid "After Campaign"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "After Map"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "PushButton"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "Close"
 msgstr ""
 
 msgctxt "ScanNetworkDialog|Window Title"
@@ -966,8 +1026,8 @@ msgctxt "SettingsDialog|Dropdown Title Label"
 msgid "Game language"
 msgstr ""
 
-msgctxt "SettingsDialog|Dropdown Title Label"
-msgid "Screenshot type"
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Display Intro"
 msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
@@ -975,15 +1035,15 @@ msgid "Display splash screens"
 msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Display Intro"
-msgstr ""
-
-msgctxt "SettingsDialog|Checkbox Toggle"
 msgid "Enable Cheats"
 msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Automatically enable imprison"
+msgid "Enable Censorship"
+msgstr ""
+
+msgctxt "SettingsDialog|Dropdown Title Label"
+msgid "Screenshot type"
 msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
@@ -991,7 +1051,7 @@ msgid "Automatically enable flee"
 msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Enable Censorship"
+msgid "Automatically enable imprison"
 msgstr ""
 
 msgctxt "SettingsDialog|Max. Zoom Distance Tooltip"
@@ -1011,6 +1071,12 @@ msgid ""
 "(default = 60)"
 msgstr ""
 
+msgctxt "SettingsDialog|Textinput Title Label"
+msgid ""
+"Gameturns per second\n"
+"(default = 20)"
+msgstr ""
+
 msgctxt "SettingsDialog|Checkbox Toggle"
 msgid "Enable delta time"
 msgstr ""
@@ -1020,16 +1086,24 @@ msgid "Freeze game when not focused"
 msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Enable Packetsave"
+msgid "Automatically save replays"
 msgstr ""
 
-msgctxt "SettingsDialog|Textinput Title Label"
-msgid "Packetsave filename"
+msgctxt "SettingsDialog|"
+msgid "Campaign max. replays"
+msgstr ""
+
+msgctxt "SettingsDialog|"
+msgid "Freeplay max. replays"
+msgstr ""
+
+msgctxt "SettingsDialog|"
+msgid "Multiplayer max. replays"
 msgstr ""
 
 msgctxt "SettingsDialog|Textinput Title Label"
 msgid ""
-"Packetsave max. filesize\n"
+"Replay max. filesize\n"
 "(0 = unlimited)"
 msgstr ""
 
@@ -1040,12 +1114,6 @@ msgstr ""
 
 msgctxt "SettingsDialog|Checkbox Toggle"
 msgid "Exit on LUA error"
-msgstr ""
-
-msgctxt "SettingsDialog|Textinput Title Label"
-msgid ""
-"Gameturns per second\n"
-"(default = 20)"
 msgstr ""
 
 msgctxt "SettingsDialog|Textinput Title Label"
