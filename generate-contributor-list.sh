@@ -4,7 +4,7 @@
 filePath="$(pwd)/res/contributors.txt"
 
 # Download list of contributors from GitHub and write to file
-curl -s "https://api.github.com/repos/dkfans/keeperfx/contributors" | jq -r '.[].login' > $filePath
+curl -s "https://api.github.com/repos/dkfans/keeperfx/contributors?per_page=100" | jq -r '.[].login' > $filePath
 
 # Show output
 cat $filePath
