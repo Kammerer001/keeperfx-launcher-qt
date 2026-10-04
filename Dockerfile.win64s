@@ -10,6 +10,13 @@ ARG CROSS_TRIPLE="x86_64-w64-mingw32.static"
 RUN cd /opt && \
     git clone https://github.com/mxe/mxe.git
 
+# Patch MXE's Qt6 build script to optimize for size without breaking MXE's internal tests
+RUN cd /opt/mxe && \
+    # Force disable ICU (International Components for Unicode)
+    sed -i 's/-DFEATURE_icu=$(CMAKE_SHARED_BOOL)/-DFEATURE_icu=OFF/g' src/qt/qt6/qt6-qtbase.mk && \
+    # Tell Qt to compile the framework optimized for size (-Os)
+    sed -i 's/-DBUILD_WITH_PCH=OFF/-DBUILD_WITH_PCH=OFF -DCMAKE_BUILD_TYPE=MinSizeRel/g' src/qt/qt6/qt6-qtbase.mk
+
 # Build qt6-qtbase using mxe
 RUN cd /opt/mxe && \
     make --jobs=$(nproc) JOBS=$(nproc) MXE_TARGETS=$CROSS_TRIPLE qt6-qtbase && \

@@ -3,11 +3,6 @@ cmake_minimum_required(VERSION 3.24)
 # Project settings
 project(keeperfx-launcher-qt VERSION 0.1 LANGUAGES CXX)
 
-# Check for supported operating systems
-#if(NOT (UNIX OR WIN32))
-#    message(FATAL_ERROR "Only UNIX and WIN32 compilation is implemented")
-#endif()
-
 # CMake settings
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -15,17 +10,42 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# MinGW/GCC Release flags for Windows static builds
-if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -static -Os -s")
+# Windows Static Release build options
+if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release" AND (MINGW OR CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"))
+    message(STATUS "Configuring Windows static build with LTO and size optimizations")
+    # Global compilation flags for Release builds
+    add_compile_options(
+        $<$<CONFIG:Release>:-Os>
+        $<$<CONFIG:Release>:-s>
+        $<$<CONFIG:Release>:-flto>
+        $<$<CONFIG:Release>:-ffat-lto-objects>
+        $<$<CONFIG:Release>:-ffunction-sections>
+        $<$<CONFIG:Release>:-fdata-sections>
+    )
+    # Global link options for Release builds
+    add_link_options(
+        $<$<CONFIG:Release>:-static>
+        $<$<CONFIG:Release>:-Os>
+        $<$<CONFIG:Release>:-s>
+        $<$<CONFIG:Release>:-flto>
+        $<$<CONFIG:Release>:-fuse-linker-plugin>
+        $<$<CONFIG:Release>:-Wl,--gc-sections>
+    )
 endif()
 
+# Setup flags for CPM third-party dependencies
 if(MSVC)
     set(DEP_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W0")
     set(DEP_CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W0")
 else()
-    set(DEP_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
-    set(DEP_CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+    # Pass LTO flags to dependencies as well if building in Release
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(DEP_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -Os -flto -ffat-lto-objects -ffunction-sections -fdata-sections")
+        set(DEP_CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -Os -flto -ffat-lto-objects -ffunction-sections -fdata-sections")
+    else()
+        set(DEP_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+        set(DEP_CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+    endif()
 endif()
 
 # Enable ccache if available
@@ -36,29 +56,13 @@ if(CCACHE_PATH)
     message(STATUS "ccache found and enabled")
 endif()
 
-# For GCC/Clang + GNU ld (Linux)
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-
-    if(WIN32)
-        # Use LLD for Windows cross-compilation
-        find_program(LLD_PATH lld)
-        if(LLD_PATH)
-            message(STATUS "LLD linker found at: ${LLD_PATH}")
-            add_link_options("-fuse-ld=lld")
-        endif()
-    else()
-        # Use Mold for Linux builds
-        find_program(MOLD_PATH mold)
-        if(MOLD_PATH)
-            message(STATUS "Mold linker found at: ${MOLD_PATH}")
-            add_link_options("-fuse-ld=mold")
-        endif()
+# Linker selection (Linux / non-Windows cross builds)
+if(NOT WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    find_program(MOLD_PATH mold)
+    if(MOLD_PATH)
+        message(STATUS "Mold linker found at: ${MOLD_PATH}")
+        add_link_options("-fuse-ld=mold")
     endif()
-
-    # Discard unused sections
-    add_link_options(-Wl,--gc-sections) # requires -ffunction-sections/-fdata-sections
-    add_compile_options(-ffunction-sections -fdata-sections) # Enable for --gc-sections
-
 endif()
 
 # Include package manager CPM
@@ -80,17 +84,19 @@ else()
         GIT_TAG v1.3.2
         OPTIONS
             "BUILD_SHARED_LIBS OFF"
-            "CMAKE_CXX_FLAGS ${DEP_CMAKE_CXX_FLAGS} -w"
-            "CMAKE_C_FLAGS ${DEP_CMAKE_C_FLAGS} -w"
+            "CMAKE_CXX_FLAGS ${DEP_CMAKE_CXX_FLAGS}"
+            "CMAKE_C_FLAGS ${DEP_CMAKE_C_FLAGS}"
     )
 
     # Bridge the target naming gap:
     # System ZLIB provides "ZLIB::ZLIB", but the source build provides "zlibstatic".
     # This alias allows the rest of our CMake script to always link against ZLIB::ZLIB.
-    if(TARGET zlibstatic)
-        add_library(ZLIB::ZLIB ALIAS zlibstatic)
-    elseif(TARGET zlib)
-        add_library(ZLIB::ZLIB ALIAS zlib)
+    if(NOT TARGET ZLIB::ZLIB)
+        if(TARGET zlibstatic)
+            add_library(ZLIB::ZLIB ALIAS zlibstatic)
+        elseif(TARGET zlib)
+            add_library(ZLIB::ZLIB ALIAS zlib)
+        endif()
     endif()
 endif()
 
@@ -104,8 +110,8 @@ CPMFindPackage(
         "BUILD_SHARED_LIBS OFF"
         "BIT7Z_BUILD_TESTS OFF"
         "BIT7Z_BUILD_DOCS OFF"
-        "CMAKE_CXX_FLAGS ${DEP_CMAKE_CXX_FLAGS} -w"
-        "CMAKE_C_FLAGS ${DEP_CMAKE_C_FLAGS} -w"
+        "CMAKE_CXX_FLAGS ${DEP_CMAKE_CXX_FLAGS}"
+        "CMAKE_C_FLAGS ${DEP_CMAKE_C_FLAGS}"
 )
 
 # Suppress the SFINAE incomplete warning specifically for bit7z
@@ -115,97 +121,11 @@ if(TARGET bit7z)
     endif()
 endif()
 
-# Library: libLIEF
-#CPMAddPackage(
-#    NAME LIEF
-#    GITHUB_REPOSITORY lief-project/LIEF
-#    GIT_TAG 1.0.0
-#    OPTIONS
-#        "BUILD_SHARED_LIBS OFF"
-#        "LIEF_DOC OFF"
-#        "LIEF_PYTHON_API OFF"
-#        "LIEF_EXAMPLES OFF"
-#        "LIEF_TESTS OFF"
-#        "LIEF_VERSION_BUMP OFF" # stop dynamic version regeneration
-#        "LIEF_PE ON" # Portable Executable format, required for Windows binaries
-#        "LIEF_ELF OFF" # Executable and Linkable Format, required for Unix binaries
-#        "LIEF_COFF ON" # Common Object File Format, required for PE
-#        "LIEF_MACHO OFF" # Mach-O, Mach-object, required for macOS binaries
-#        "LIEF_DEX OFF" # Dalvid Executable format (Android)
-#        "LIEF_ART OFF"
-#        "LIEF_USE_MELKOR OFF" # ELF File Format Fuzzer
-#        "CMAKE_CXX_FLAGS ${DEP_CMAKE_CXX_FLAGS} -w"
-#        "CMAKE_C_FLAGS ${DEP_CMAKE_C_FLAGS} -w"
-#)
-
 # Set custom UI directory
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
-# Create /deps dir if it does not exist yet
-#file(MAKE_DIRECTORY "${CMAKE_SOURCE_DIR}/deps")
-
-# Function to download and extract dependencies
-#function(download_and_extract url output_dir)
-#    file(DOWNLOAD ${url} ${CMAKE_BINARY_DIR}/temp_archive)
-#    if(UNIX)
-#        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_BINARY_DIR}/temp_archive WORKING_DIRECTORY ${output_dir})
-#    elseif(WIN32)
-#        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_BINARY_DIR}/temp_archive WORKING_DIRECTORY ${output_dir})
-#    endif()
-#    file(REMOVE ${CMAKE_BINARY_DIR}/temp_archive)
-#endfunction()
-
-# bit7z
-#set(BIT7Z_DIR ${CMAKE_SOURCE_DIR}/deps/bit7z-4.0.9/)
-#if(NOT EXISTS BIT7Z_DIR)
-#    download_and_extract("https://github.com/rikyoz/bit7z/archive/refs/tags/v4.0.9.zip" ${CMAKE_SOURCE_DIR}/deps)
-#endif()
-
-# bit7z does not come with a cmake file
-#add_subdirectory(${BIT7Z_DIR})
-
 # Find packages
 find_package(Qt6 REQUIRED COMPONENTS Widgets Network Gui)
-#find_package(ZLIB REQUIRED)
-#find_package(LIEF REQUIRED COMPONENTS STATIC)
-find_package(bit7z REQUIRED)
-
-# Add Zlib
-#find_package(ZLIB)
-#if (NOT ZLIB_FOUND)
-#    message(STATUS "Zlib library not found, using local dependency")
-#    set(ZLIB_DIR ${CMAKE_SOURCE_DIR}/deps/zlib-1.3.1)
-#    if(NOT EXISTS ${ZLIB_DIR})
-#        download_and_extract("https://zlib.net/zlib131.zip" ${CMAKE_SOURCE_DIR}/deps)
-#    endif()
-#    add_subdirectory(${ZLIB_DIR})
-#endif()
-
-# Add LIEF
-#find_package(LIEF)
-#if (NOT LIEF_FOUND)
-#    message(STATUS "LIEF library not found, using local dependency")
-#
-#    # Download LIEF if it is not downloaded yet
-#    if(UNIX)
-#        set(LIEF_INSTALL_DIR ${CMAKE_SOURCE_DIR}/deps/LIEF-0.17.6-Linux-x86_64)
-#        if(NOT EXISTS LIEF_INSTALL_DIR)
-#            download_and_extract("https://github.com/lief-project/LIEF/releases/download/0.17.6/LIEF-0.17.6-Linux-x86_64.tar.gz" ${CMAKE_SOURCE_DIR}/deps)
-#        endif()
-#    elseif(WIN32)
-#        set(LIEF_INSTALL_DIR ${CMAKE_SOURCE_DIR}/deps/LIEF-0.17.6-win64)
-#        if(NOT EXISTS LIEF_INSTALL_DIR)
-#            download_and_extract("https://github.com/lief-project/LIEF/releases/download/0.17.6/LIEF-0.17.6-win64.zip" ${CMAKE_SOURCE_DIR}/deps)
-#        endif()
-#    endif()
-#
-#    # Load local LIEF
-#    set(LIEF_DIR ${LIEF_INSTALL_DIR}/lib/cmake/LIEF)
-#    set(LIEF_INCLUDE_DIR ${LIEF_INSTALL_DIR}/include)
-#    set(LIEF_LIB_DIR ${LIEF_INSTALL_DIR}/lib)
-#    include_directories(${LIEF_INCLUDE_DIR})
-#    link_directories(${LIEF_LIB_DIR})
-#endif()
 
 # Get source files
 file(GLOB PROJECT_SOURCES src/*.cpp src/*.h)
@@ -213,18 +133,14 @@ file(GLOB UI_FILES ui/*.ui)
 
 if(WIN32)
     qt_add_executable(keeperfx-launcher-qt
-        # MANUAL_FINALIZATION
         WIN32
         ${PROJECT_SOURCES}
-        # ${UI_FILES}
         resources.qrc
         app.rc
     )
 else()
     qt_add_executable(keeperfx-launcher-qt
-        # MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        # ${UI_FILES}
         resources.qrc
     )
 endif()
@@ -236,7 +152,6 @@ target_link_libraries(keeperfx-launcher-qt PRIVATE
     Qt6::Network
     Qt6::Gui
     ZLIB::ZLIB
-    #LIEF::LIEF
     bit7z
 )
 
@@ -245,29 +160,6 @@ if(WIN32)
     target_link_libraries(keeperfx-launcher-qt PRIVATE crypt32)
 endif()
 
-# Link Zlib
-#if (ZLIB_FOUND)
-#    target_link_libraries(keeperfx-launcher-qt PRIVATE ZLIB::ZLIB)
-#else()
-#    target_include_directories(keeperfx-launcher-qt PRIVATE ${ZLIB_DIR})
-#    target_link_libraries(keeperfx-launcher-qt PRIVATE zlibstatic)
-#endif()
-
-# Link LIEF
-#if (LIEF_FOUND)
-#    target_link_libraries(keeperfx-launcher-qt PRIVATE LIEF::LIEF)
-#else()
-#    if(UNIX)
-#        target_link_libraries(keeperfx-launcher-qt PRIVATE ${LIEF_LIB_DIR}/libLIEF.a)
-#    elseif(WIN32)
-#        if (CMAKE_BUILD_TYPE STREQUAL "Release")
-#            target_link_libraries(keeperfx-launcher-qt PRIVATE ${LIEF_LIB_DIR}/LIEF_static.lib)
-#        else()
-#            target_link_libraries(keeperfx-launcher-qt PRIVATE ${LIEF_LIB_DIR}/LIEF.lib)
-#        endif()
-#    endif()
-#endif()
-
 # Set target properties
 set_target_properties(keeperfx-launcher-qt PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -275,9 +167,6 @@ set_target_properties(keeperfx-launcher-qt PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
-
-# Finalize executable
-# qt_finalize_executable(keeperfx-launcher-qt)
 
 # Copy pre-compiled libraries
 if (UNIX)
