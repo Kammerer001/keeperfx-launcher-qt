@@ -5,13 +5,14 @@ usage() {
     echo ""
     echo " KeeperFX Launcher - Build Script"
     echo ""
-    echo " Usage: $0 <win64s|linux64> <debug|release|console> [--installer] [--verbose]"
+    echo " Usage: $0 <win64s|linux64> <debug|release|console> [--archive] [--installer] [--verbose]"
     echo ""
     echo " Commands: "
     echo "     $0 <win64s|linux64> <debug|release>      build a debug or release version"
     echo "     $0 <win64s|linux64> console              open a console in the build container"
     echo ""
     echo " Options:"
+    echo "     --archive               also create an archive containing the build files (using 7z)"
     echo "     --installer             also create an installer for the release build"
     echo "     --verbose               enable cmake verbosity"
     echo ""
@@ -38,11 +39,15 @@ VERBOSE=""
 BUILD_SHARED_LIBS=ON
 BUILD_INSTALLER=OFF
 TARGET_CONTAINER=""
+ARCHIVE_RELEASE=OFF
 
 # Handle options
 shift 2 # Remove first 2 arguments
 while (("$#")); do
     case "$1" in
+        --archive)
+            ARCHIVE_RELEASE=ON
+        ;;
         --installer)
             BUILD_INSTALLER=ON
             ;;
@@ -172,9 +177,11 @@ if [ "$TARGET" = "win64s" ]; then
             mv "$(pwd)/release/win64/keeperfx-web-installer.exe" "$(pwd)/release/win64/keeperfx-launcher-qt-$VERSION-win64-web-installer.exe"
         fi
 
-        # Package files
-        echo "Packaging release"
-        7z a "$(pwd)/release/win64/keeperfx-launcher-qt-$VERSION-win64.7z" "$(pwd)/release/win64/keeperfx-launcher-qt.exe" "$(pwd)/release/win64/7za.dll"
+        # Archive/package the release
+        if [ "$ARCHIVE_RELEASE" == "ON" ]; then
+            echo "Packaging release..."
+            7z a "$(pwd)/release/win64/keeperfx-launcher-qt-$VERSION-win64.7z" "$(pwd)/release/win64/keeperfx-launcher-qt.exe" "$(pwd)/release/win64/7za.dll"
+        fi
 
         # Show release directory output
         ls -lh "$(pwd)/release/win64/"
