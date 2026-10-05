@@ -53,6 +53,8 @@ private slots:
     void on_websiteButton_clicked();
     void on_checkForUpdatesButton_clicked();
 
+    void on_replaysButton_clicked();
+
 private:
     Ui::LauncherMainWindow *ui;
     Game *game;

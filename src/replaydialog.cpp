@@ -1,6 +1,6 @@
 #include "helper.h"
-#include "loadreplaydialog.h"
-#include "ui_loadreplaydialog.h"
+#include "replaydialog.h"
+#include "ui_replaydialog.h"
 
 #include <QDir>
 #include <QDirIterator>
@@ -84,9 +84,9 @@ class MutedExtensionDelegate : public QStyledItemDelegate {
     }
 };
 
-LoadReplayDialog::LoadReplayDialog(QWidget *parent)
+ReplayDialog::ReplayDialog(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::LoadReplayDialog)
+    , ui(new Ui::ReplayDialog)
 {
     ui->setupUi(this);
 
@@ -214,37 +214,37 @@ LoadReplayDialog::LoadReplayDialog(QWidget *parent)
     ui->copyButton->setDisabled(true);
 
     // Make selecting a replay enable the buttons at the bottom
-    connect(ui->tableWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LoadReplayDialog::updateButtons);
+    connect(ui->tableWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ReplayDialog::updateButtons);
 
     // Add a right click context menu to the table
     ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->tableWidget, &QTableWidget::customContextMenuRequested, this, &LoadReplayDialog::showContextMenu);
+    connect(ui->tableWidget, &QTableWidget::customContextMenuRequested, this, &ReplayDialog::showContextMenu);
 }
 
-LoadReplayDialog::~LoadReplayDialog()
+ReplayDialog::~ReplayDialog()
 {
     delete ui;
 }
 
-QString LoadReplayDialog::getReplayFileName()
+QString ReplayDialog::getReplayFileName()
 {
     return this->replayFileName;
 }
 
-void LoadReplayDialog::updateButtons()
+void ReplayDialog::updateButtons()
 {
     bool hasSelection = ui->tableWidget->selectionModel()->hasSelection();
     ui->startButton->setEnabled(hasSelection);
     ui->copyButton->setEnabled(hasSelection);
 }
 
-void LoadReplayDialog::on_cancelButton_clicked()
+void ReplayDialog::on_cancelButton_clicked()
 {
     qDebug() << "Closing dialog";
     this->close();
 }
 
-void LoadReplayDialog::on_startButton_clicked()
+void ReplayDialog::on_startButton_clicked()
 {
     qDebug() << "Start button clicked";
 
@@ -270,7 +270,7 @@ void LoadReplayDialog::on_startButton_clicked()
     this->accept();
 }
 
-void LoadReplayDialog::on_copyButton_clicked()
+void ReplayDialog::on_copyButton_clicked()
 {
     qDebug() << "Copy button clicked";
 
@@ -313,7 +313,7 @@ void LoadReplayDialog::on_copyButton_clicked()
     }
 }
 
-void LoadReplayDialog::showContextMenu(const QPoint &pos)
+void ReplayDialog::showContextMenu(const QPoint &pos)
 {
     // Find the item under the mouse cursor
     QTableWidgetItem *item = ui->tableWidget->itemAt(pos);
@@ -339,8 +339,8 @@ void LoadReplayDialog::showContextMenu(const QPoint &pos)
     copyAction->setEnabled(ui->copyButton->isEnabled());
 
     // Connect the menu actions directly to your existing button slots
-    connect(startAction, &QAction::triggered, this, &LoadReplayDialog::on_startButton_clicked);
-    connect(copyAction, &QAction::triggered, this, &LoadReplayDialog::on_copyButton_clicked);
+    connect(startAction, &QAction::triggered, this, &ReplayDialog::on_startButton_clicked);
+    connect(copyAction, &QAction::triggered, this, &ReplayDialog::on_copyButton_clicked);
 
     // Add actions to the menu
     contextMenu.addAction(startAction);

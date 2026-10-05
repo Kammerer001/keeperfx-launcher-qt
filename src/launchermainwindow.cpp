@@ -34,7 +34,7 @@
 //#include "modmanager.h"
 #include "modmanagerdialog.h"
 #include "newsarticlewidget.h"
-#include "loadreplaydialog.h"
+#include "replaydialog.h"
 #include "savefile.h"
 #include "settings.h"
 #include "settingsdialog.h"
@@ -416,19 +416,6 @@ void LauncherMainWindow::setupPlayExtraMenu()
         EnetServerTestDialog dialog(this);
         dialog.exec();
     });*/
-
-    // Load replay action
-    if (KfxVersion::hasFunctionality("replays") == true) {
-        menu->addAction(tr("Load Replay...", "Menu"), [this]() {
-            qDebug() << "Load Replay selected!";
-            // Open the dialog
-            LoadReplayDialog dialog(this);
-            if (dialog.exec() == QDialog::Accepted) {
-                // Start the game
-                startGame(Game::StartType::LOAD_REPLAY, dialog.getReplayFileName());
-            }
-        });
-    }
 
     // Start without mods action
     if (KfxVersion::hasFunctionality("start_without_mods_param") == true) {
@@ -1471,5 +1458,18 @@ void LauncherMainWindow::on_checkForUpdatesButton_clicked()
 
     // Check for updates
     checkForKfxUpdate(true, true);
+}
+
+
+void LauncherMainWindow::on_replaysButton_clicked()
+{
+
+    qDebug() << "Replay dialog opened!";
+    // Open the dialog
+    ReplayDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        // Start the game
+        startGame(Game::StartType::LOAD_REPLAY, dialog.getReplayFileName());
+    }
 }
 

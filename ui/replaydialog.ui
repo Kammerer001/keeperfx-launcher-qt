@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LoadReplayDialog</class>
- <widget class="QDialog" name="LoadReplayDialog">
+ <class>ReplayDialog</class>
+ <widget class="QDialog" name="ReplayDialog">
   <property name="windowModality">
    <enum>Qt::WindowModality::WindowModal</enum>
   </property>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string comment="Dialog Title">Load Replay</string>
+   <string comment="Dialog Title">Replays</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
@@ -30,7 +30,7 @@
       </font>
      </property>
      <property name="text">
-      <string comment="Header">Load Replay</string>
+      <string comment="Header">Replays</string>
      </property>
      <property name="margin">
       <number>7</number>
@@ -48,7 +48,7 @@
 }</string>
      </property>
      <property name="text">
-      <string comment="Information Label">Select a replay to load. KeeperFX will be started and the replay will automatically start playing.</string>
+      <string comment="Information Label">These are your stored replays. You can either play them directly in KeeperFX or copy them to your clipboard if you want to share them with others.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -109,7 +109,7 @@ QTableView::item { padding: 4px 8px; }</string>
          </size>
         </property>
         <property name="text">
-         <string comment="Button">Cancel</string>
+         <string comment="Button">Close</string>
         </property>
         <property name="icon">
          <iconset theme="QIcon::ThemeIcon::EditClear"/>

@@ -2,15 +2,15 @@
 
 #include <QDialog>
 
-namespace Ui { class LoadReplayDialog; }
+namespace Ui { class ReplayDialog; }
 
-class LoadReplayDialog : public QDialog
+class ReplayDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit LoadReplayDialog(QWidget *parent = nullptr);
-    ~LoadReplayDialog();
+    explicit ReplayDialog(QWidget *parent = nullptr);
+    ~ReplayDialog();
 
     QString getReplayFileName();
 
@@ -24,7 +24,7 @@ private slots:
     void showContextMenu(const QPoint &pos);
 
 private:
-    Ui::LoadReplayDialog *ui;
+    Ui::ReplayDialog *ui;
 
     QString replayFileName;
 };
