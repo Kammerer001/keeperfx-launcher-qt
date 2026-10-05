@@ -17,7 +17,11 @@ public:
 private slots:
     void on_cancelButton_clicked();
     void on_startButton_clicked();
-    void updateStartButton();
+    void on_copyButton_clicked();
+
+    void updateButtons();
+
+    void showContextMenu(const QPoint &pos);
 
 private:
     Ui::LoadReplayDialog *ui;

@@ -1,3 +1,4 @@
+#include "helper.h"
 #include "loadreplaydialog.h"
 #include "ui_loadreplaydialog.h"
 
@@ -11,6 +12,8 @@
 #include <QStyledItemDelegate>
 #include <QPainter>
 #include <QApplication>
+#include <QTimer>
+#include <QMenu>
 
 #define REPLAY_FILE_EXTENSION "fxpkt"
 
@@ -175,8 +178,6 @@ LoadReplayDialog::LoadReplayDialog(QWidget *parent)
 
         // Column 0: Type
         QTableWidgetItem *typeItem = new QTableWidgetItem(typeName);
-        // Store the dynamic app-relative path in this item for the start button
-        typeItem->setData(Qt::UserRole, internalPath);
         ui->tableWidget->setItem(i, 0, typeItem);
 
         // Column 1: Name
@@ -194,6 +195,10 @@ LoadReplayDialog::LoadReplayDialog(QWidget *parent)
         QString dateString = QLocale().toString(modTime, QLocale::ShortFormat);
         SortableTableWidgetItem *dateItem = new SortableTableWidgetItem(dateString, modTime.toMSecsSinceEpoch());
         ui->tableWidget->setItem(i, 3, dateItem);
+
+        // Store hidden data in the cells
+        typeItem->setData(Qt::UserRole, internalPath); // Column: 0 -> relative path (used for starting the replay)
+        nameItem->setData(Qt::UserRole, absPath);      // Column: 1 -> absolute path (used for copying the file)
     }
 
     // Re-enable sorting and sort by Date (Column 3) Descending (newest on top)
@@ -204,11 +209,16 @@ LoadReplayDialog::LoadReplayDialog(QWidget *parent)
     ui->tableWidget->clearSelection();
     ui->tableWidget->setCurrentItem(nullptr);
 
-    // Disable start button at start
+    // Disable start and copy button at start
     ui->startButton->setDisabled(true);
+    ui->copyButton->setDisabled(true);
 
-    // Make selecting a replay enable the Start button
-    connect(ui->tableWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LoadReplayDialog::updateStartButton);
+    // Make selecting a replay enable the buttons at the bottom
+    connect(ui->tableWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LoadReplayDialog::updateButtons);
+
+    // Add a right click context menu to the table
+    ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableWidget, &QTableWidget::customContextMenuRequested, this, &LoadReplayDialog::showContextMenu);
 }
 
 LoadReplayDialog::~LoadReplayDialog()
@@ -221,10 +231,11 @@ QString LoadReplayDialog::getReplayFileName()
     return this->replayFileName;
 }
 
-void LoadReplayDialog::updateStartButton()
+void LoadReplayDialog::updateButtons()
 {
     bool hasSelection = ui->tableWidget->selectionModel()->hasSelection();
     ui->startButton->setEnabled(hasSelection);
+    ui->copyButton->setEnabled(hasSelection);
 }
 
 void LoadReplayDialog::on_cancelButton_clicked()
@@ -250,11 +261,91 @@ void LoadReplayDialog::on_startButton_clicked()
 
     // Retrieve the exact app-relative path format requested
     QString replayFileNameString = typeItem->data(Qt::UserRole).toString();
-    qDebug() << "Selected replay:" << replayFileNameString;
+    qDebug() << "Selected replay to start:" << replayFileNameString;
 
     // Remember replay filename so we can use it from the calling window
     this->replayFileName = replayFileNameString;
 
     // Accept dialog
     this->accept();
+}
+
+void LoadReplayDialog::on_copyButton_clicked()
+{
+    qDebug() << "Copy button clicked";
+
+    // Get selection
+    QModelIndexList selected = ui->tableWidget->selectionModel()->selectedRows();
+    if (selected.isEmpty()) {
+        qDebug() << "Nothing was selected";
+        return;
+    }
+
+    // Look at Column 1 (Name) where the path is stored
+    int row = selected.first().row();
+    QTableWidgetItem *nameItem = ui->tableWidget->item(row, 1);
+
+    // Retrieve the absolute path format requested
+    QString replayFilePathString = nameItem->data(Qt::UserRole).toString();
+    qDebug() << "Selected replay to copy:" << replayFilePathString;
+
+    bool copySuccess = Helper::copyFileToClipboard(replayFilePathString);
+
+    if(copySuccess){
+
+        // Remember the original text and size
+        QString originalText = ui->copyButton->text();
+        ui->copyButton->setMinimumWidth(ui->copyButton->width());
+
+        // Change button state
+        ui->copyButton->setText(tr("Copied!", "Button State Text"));
+        ui->copyButton->setEnabled(false);
+
+        // 3. Create a one-shot timer to restore the button after 2000 ms (2 seconds)
+        // Passing 'this' as the second argument ensures that if the dialog is closed
+        // before the 2 seconds are up, the timer is safely canceled.
+        QTimer::singleShot(2000, this, [this, originalText]() {
+            ui->copyButton->setText(originalText);
+            ui->copyButton->setEnabled(true);
+        });
+    } else {
+        qDebug() << "Failed to copy to clipboard (file missing or clipboard error).";
+    }
+}
+
+void LoadReplayDialog::showContextMenu(const QPoint &pos)
+{
+    // Find the item under the mouse cursor
+    QTableWidgetItem *item = ui->tableWidget->itemAt(pos);
+
+    // If the user right-clicked on empty space, don't show the menu
+    if (!item) {
+        return;
+    }
+
+    // Crucial: Select the right-clicked row.
+    // This ensures your existing button slots process the correct file.
+    ui->tableWidget->selectRow(item->row());
+
+    // Create the context menu
+    QMenu contextMenu(this);
+
+    // Create actions, fetching the translated text directly from the buttons
+    QAction *startAction = new QAction(ui->startButton->text(), &contextMenu);
+    QAction *copyAction = new QAction(ui->copyButton->text(), &contextMenu);
+
+    // Sync the enabled state (so if copy is disabled for 2s due to "Copied!", the menu matches)
+    startAction->setEnabled(ui->startButton->isEnabled());
+    copyAction->setEnabled(ui->copyButton->isEnabled());
+
+    // Connect the menu actions directly to your existing button slots
+    connect(startAction, &QAction::triggered, this, &LoadReplayDialog::on_startButton_clicked);
+    connect(copyAction, &QAction::triggered, this, &LoadReplayDialog::on_copyButton_clicked);
+
+    // Add actions to the menu
+    contextMenu.addAction(startAction);
+    contextMenu.addAction(copyAction);
+
+    // Show the menu at the global position of the cursor
+    contextMenu.exec(ui->tableWidget->viewport()->mapToGlobal(pos));
 }
