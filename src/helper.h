@@ -12,6 +12,8 @@
 #include <QWheelEvent>
 #include <QDesktopServices>
 #include <QtEndian>
+#include <QMimeData>
+#include <QClipboard>
 
 #ifdef Q_OS_WINDOWS
     #include <windows.h>
@@ -453,5 +455,30 @@ public:
         // Append flag should guarantee the file won't be truncated
         return !file.open(QIODevice::Append);
 #endif
+    }
+
+    static bool copyFileToClipboard(const QString &filePath)
+    {
+        // Make sure the file is set and exists
+        if (filePath.isEmpty() || !QFileInfo::exists(filePath)) {
+            return false;
+        }
+
+        // Create a clipboard instance
+        QClipboard *clipboard = QGuiApplication::clipboard();
+        if (!clipboard) {
+            return false;
+        }
+
+        // Create the MimeData to hold the file URL
+        QMimeData *mimeData = new QMimeData();
+        QList<QUrl> urls;
+        urls.append(QUrl::fromLocalFile(filePath));
+        mimeData->setUrls(urls);
+
+        // Set the clipboard
+        clipboard->setMimeData(mimeData);
+
+        return true;
     }
 };
