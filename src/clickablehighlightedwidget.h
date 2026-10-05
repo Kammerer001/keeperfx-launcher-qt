@@ -29,6 +29,7 @@ protected:
 
     // Handle hover enter event
     void enterEvent(QEnterEvent *event) override {
+        overlay->raise();
         overlay->show();  // Show the overlay
         QWidget::enterEvent(event);
     }
