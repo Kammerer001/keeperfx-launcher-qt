@@ -83,6 +83,7 @@ private:
 
     void checkForNewLauncher();
     void checkForFileRemoval();
+    void checkForVersionMismatch();
 
     void forceKfxUpdateCheck();
     void checkForKfxUpdate(bool ignoreInterval = false, bool showMessageBox = false);

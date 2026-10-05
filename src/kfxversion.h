@@ -19,10 +19,21 @@ public:
     };
     Q_ENUM(ReleaseType)
 
-    inline static ReleaseType getReleaseTypefromString(const QString &str) {
+    static ReleaseType getReleaseTypefromString(const QString &str) {
         QMetaEnum metaEnum = QMetaEnum::fromType<ReleaseType>();
         int value = metaEnum.keyToValue(str.toUtf8().toUpper().constData());
         return (value == -1) ? UNKNOWN : static_cast<ReleaseType>(value);
+    }
+
+    static QString getStringFromReleaseType(ReleaseType type) {
+        static const QHash<ReleaseType, QString> translations = {
+            { UNKNOWN, tr("Unknown", "Release Type") },
+            { STABLE, tr("Stable", "Release Type") },
+            { ALPHA, tr("Alpha", "Release Type") },
+            { PROTOTYPE, tr("Prototype", "Release Type") },
+            { DEVELOPMENT, tr("Development", "Release Type") }
+        };
+        return translations.value(type, tr("Unknown", "Release Type"));
     }
 
     struct VersionInfo

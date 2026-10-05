@@ -289,6 +289,9 @@ LauncherMainWindow::LauncherMainWindow(QWidget *parent)
         }
     }
 
+    // Check for a KeeperFX- and Launcher version mismatch
+    checkForVersionMismatch();
+
     // Load the extra menu for the button next to the play button
     setupPlayExtraMenu();
 
@@ -1473,3 +1476,78 @@ void LauncherMainWindow::on_replaysButton_clicked()
     }
 }
 
+void LauncherMainWindow::checkForVersionMismatch()
+{
+    // Make sure KeeperFX is installed
+    if (Helper::isKeeperFxInstalled() == false) {
+        qWarning() << "Not checking for version mismatch because KeeperFX is not installed";
+        return;
+    }
+
+    // Make sure the current version is known
+    if(KfxVersion::currentVersion.type == KfxVersion::ReleaseType::UNKNOWN){
+        qWarning() << "Not checking for version mismatch because KeeperFX version is unknown";
+        return;
+    }
+
+    // Make sure the current version is either a Stable or an Alpha
+    if(KfxVersion::currentVersion.type != KfxVersion::ReleaseType::STABLE && KfxVersion::currentVersion.type != KfxVersion::ReleaseType::ALPHA){
+        qWarning() << "Not checking for version mismatch because KeeperFX version is not Stable or Alpha";
+        return;
+    }
+
+    // Get the wanted release type
+    QString typeString = Settings::getLauncherSetting("CHECK_FOR_UPDATES_RELEASE").toString();
+    KfxVersion::ReleaseType launcherReleaseType = KfxVersion::getReleaseTypefromString(typeString);
+
+    // Check if the installed version matches the wanted release type
+    if(KfxVersion::currentVersion.type == launcherReleaseType){
+        return;
+    }
+
+    // Create the messagebox
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowTitle(tr("KeeperFX Version Mismatch", "Messagebox Title"));
+    msgBox.setText(
+        tr("The launcher has detected that the installed KeeperFX release type (%1) "
+           "does not match what the launcher was expecting (%2).\n\n"
+           "This can happen if you manually installed a KeeperFX version after installing the game using the launcher, "
+           "or if you changed your release type in the settings without letting the launcher update the files.\n\n"
+           "Please select which version you want to use:", "Messagebox Text")
+        .arg(
+            KfxVersion::getStringFromReleaseType(KfxVersion::currentVersion.type),
+            KfxVersion::getStringFromReleaseType(launcherReleaseType)
+        )
+    );
+
+    // Add custom buttons to the messagebox
+    QPushButton *stableButton = msgBox.addButton(KfxVersion::getStringFromReleaseType(KfxVersion::ReleaseType::STABLE), QMessageBox::ActionRole);
+    QPushButton *alphaButton = msgBox.addButton(KfxVersion::getStringFromReleaseType(KfxVersion::ReleaseType::ALPHA), QMessageBox::ActionRole);
+
+    // Add a hidden cancel button so the user can click the messagebox away
+    QPushButton *cancelButton = msgBox.addButton(QMessageBox::Cancel);
+    cancelButton->hide();
+
+    // Select the button which is most likely correct
+    if(KfxVersion::currentVersion.type == KfxVersion::ReleaseType::STABLE){
+        msgBox.setDefaultButton(stableButton);
+    } else if (KfxVersion::currentVersion.type == KfxVersion::ReleaseType::ALPHA) {
+        msgBox.setDefaultButton(alphaButton);
+    } else {
+        msgBox.setDefaultButton(cancelButton);
+    }
+
+    // Show the message box
+    // exec() will force this messagebox to be handled before being able to continue
+    msgBox.exec();
+
+    // Handle which button was clicked and set the correct release type for the launcher
+    if (msgBox.clickedButton() == stableButton) {
+        Settings::setLauncherSetting("CHECK_FOR_UPDATES_RELEASE", "STABLE");
+    } else if (msgBox.clickedButton() == alphaButton) {
+        Settings::setLauncherSetting("CHECK_FOR_UPDATES_RELEASE", "ALPHA");
+    } else {
+        qWarning() << "User closed the messagebox without making a choice";
+    }
+}
