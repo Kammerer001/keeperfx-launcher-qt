@@ -188,7 +188,7 @@ ReplayDialog::ReplayDialog(QWidget *parent)
 
         // Column 2: Size
         qint64 sizeInKiB = info.size() / 1024;
-        QString sizeString = QString("%1 kiB").arg(sizeInKiB);
+        QString sizeString = tr("%1 KiB", "Replay Filesize").arg(sizeInKiB);
         SortableTableWidgetItem *sizeItem = new SortableTableWidgetItem(sizeString, sizeInKiB);
         ui->tableWidget->setItem(i, 2, sizeItem);
 
