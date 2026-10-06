@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 12:56+0200\n"
-"PO-Revision-Date: 2026-10-06 13:06+0200\n"
+"POT-Creation-Date: 2026-10-06 21:16+0200\n"
+"PO-Revision-Date: 2026-10-06 21:20+0200\n"
 "Last-Translator: Yani <yani@keeperfx.net>\n"
 "Language-Team: Dutch <http://translate.keeperfx.net/projects/keeperfx/"
 "launcher/nl/>\n"
@@ -1097,6 +1097,11 @@ msgctxt "ReplayDialog|Replay Type"
 msgid "Multiplayer"
 msgstr "Multiplayer"
 
+#, qt-format
+msgctxt "ReplayDialog|Replay Filesize"
+msgid "%1 KiB"
+msgstr "%1 KiB"
+
 msgctxt "ReplayDialog|Button State Text"
 msgid "Copied!"
 msgstr "Gekopieerd!"
@@ -1231,18 +1236,6 @@ msgstr ""
 "Gameturns per seconde\n"
 "(standaard = 20)"
 
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Enable delta time"
-msgstr "Deltatijd inschakelen"
-
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Freeze game when not focused"
-msgstr "Spel bevriezen bij verlies van focus"
-
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Automatically save replays"
-msgstr "Replays automatisch opslaan"
-
 msgctxt "SettingsDialog|"
 msgid "Campaign max. replays"
 msgstr "Max. replays voor campagnes"
@@ -1268,13 +1261,25 @@ msgctxt "SettingsDialog|Measurement Unit Label"
 msgid "KiB"
 msgstr "KiB"
 
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Exit on LUA error"
-msgstr "Afsluiten bij LUA-fout"
-
 msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Game launch options"
 msgstr "Spel startopties"
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Enable delta time"
+msgstr "Deltatijd inschakelen"
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Freeze game when not focused"
+msgstr "Spel bevriezen bij verlies van focus"
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Automatically save replays"
+msgstr "Replays automatisch opslaan"
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Exit on LUA error"
+msgstr "Afsluiten bij LUA-fout"
 
 msgctxt "SettingsDialog|Tab Title"
 msgid "Graphics"
