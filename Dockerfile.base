@@ -1,7 +1,7 @@
 FROM ubuntu:26.04
 
 # CMake version to download
-ARG CMAKE_VERSION=4.3.4
+ARG CMAKE_VERSION=4.4.4
 
 # Create normal user
 #ARG USER_ID=1000
