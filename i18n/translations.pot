@@ -905,46 +905,6 @@ msgid ""
 "Please select which version you want to use:"
 msgstr ""
 
-msgctxt "ModManagerDialog|"
-msgid "KeeperFX Mod Manager"
-msgstr ""
-
-msgctxt "ModManagerDialog|Header"
-msgid "Mod Manager"
-msgstr ""
-
-msgctxt "ModManagerDialog|Info text"
-msgid ""
-"Mods are loaded from top to bottom and you can decide when a mod gets "
-"loaded. It can be after the KeeperFX base game, after the campaign specific "
-"changes, or after the map specific changes. Move them up or down to change "
-"the order."
-msgstr ""
-
-msgctxt "ModManagerDialog|"
-msgid "After Base game"
-msgstr ""
-
-msgctxt "ModManagerDialog|"
-msgid "<PLACEHOLDER>"
-msgstr ""
-
-msgctxt "ModManagerDialog|"
-msgid "After Campaign"
-msgstr ""
-
-msgctxt "ModManagerDialog|"
-msgid "After Map"
-msgstr ""
-
-msgctxt "ModManagerDialog|"
-msgid "PushButton"
-msgstr ""
-
-msgctxt "ModManagerDialog|"
-msgid "Close"
-msgstr ""
-
 msgctxt "ReplayDialog|Dialog Title"
 msgid "Replays"
 msgstr ""
