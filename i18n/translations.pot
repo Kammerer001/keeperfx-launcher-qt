@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 18:05+0200\n"
+"POT-Creation-Date: 2026-10-06 12:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -671,6 +671,26 @@ msgctxt "InstallKfxDialog|MessageBox Text"
 msgid "KeeperFX has been successfully installed!"
 msgstr ""
 
+msgctxt "KfxVersion|Release Type"
+msgid "Unknown"
+msgstr ""
+
+msgctxt "KfxVersion|Release Type"
+msgid "Stable"
+msgstr ""
+
+msgctxt "KfxVersion|Release Type"
+msgid "Alpha"
+msgstr ""
+
+msgctxt "KfxVersion|Release Type"
+msgid "Prototype"
+msgstr ""
+
+msgctxt "KfxVersion|Release Type"
+msgid "Development"
+msgstr ""
+
 msgctxt "LauncherMainWindow|"
 msgid "KeeperFX Launcher"
 msgstr ""
@@ -693,6 +713,10 @@ msgstr ""
 
 msgctxt "LauncherMainWindow|Button"
 msgid "Workshop"
+msgstr ""
+
+msgctxt "LauncherMainWindow|Button"
+msgid "Replays"
 msgstr ""
 
 msgctxt "LauncherMainWindow|Button tooltip text"
@@ -773,10 +797,6 @@ msgstr ""
 
 msgctxt "LauncherMainWindow|Menu"
 msgid "Direct connect (MP)"
-msgstr ""
-
-msgctxt "LauncherMainWindow|Menu"
-msgid "Load Replay..."
 msgstr ""
 
 msgctxt "LauncherMainWindow|Menu"
@@ -868,58 +888,123 @@ msgctxt "LauncherMainWindow|Window Title"
 msgid "KeeperFX Launcher"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Dialog Title"
-msgid "Load Replay"
+msgctxt "LauncherMainWindow|Messagebox Title"
+msgid "KeeperFX Version Mismatch"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Header"
-msgid "Load Replay"
-msgstr ""
-
-msgctxt "LoadReplayDialog|Information Label"
+#, qt-format
+msgctxt "LauncherMainWindow|Messagebox Text"
 msgid ""
-"Select a replay to load. KeeperFX will be started and the replay will "
-"automatically start playing."
+"The launcher has detected that the installed KeeperFX release type (%1) does "
+"not match what the launcher was expecting (%2).\n"
+"\n"
+"This can happen if you manually installed a KeeperFX version after "
+"installing the game using the launcher, or if you changed your release type "
+"in the settings without letting the launcher update the files.\n"
+"\n"
+"Please select which version you want to use:"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Button"
-msgid "Cancel"
+msgctxt "ModManagerDialog|"
+msgid "KeeperFX Mod Manager"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Button"
+msgctxt "ModManagerDialog|Header"
+msgid "Mod Manager"
+msgstr ""
+
+msgctxt "ModManagerDialog|Info text"
+msgid ""
+"Mods are loaded from top to bottom and you can decide when a mod gets "
+"loaded. It can be after the KeeperFX base game, after the campaign specific "
+"changes, or after the map specific changes. Move them up or down to change "
+"the order."
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "After Base game"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "<PLACEHOLDER>"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "After Campaign"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "After Map"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "PushButton"
+msgstr ""
+
+msgctxt "ModManagerDialog|"
+msgid "Close"
+msgstr ""
+
+msgctxt "ReplayDialog|Dialog Title"
+msgid "Replays"
+msgstr ""
+
+msgctxt "ReplayDialog|Header"
+msgid "Replays"
+msgstr ""
+
+msgctxt "ReplayDialog|Information Label"
+msgid ""
+"These are your stored replays. You can either play them directly in KeeperFX "
+"or copy them to your clipboard if you want to share them with others."
+msgstr ""
+
+msgctxt "ReplayDialog|Button"
+msgid "Close"
+msgstr ""
+
+msgctxt "ReplayDialog|Button"
+msgid "Copy to Clipboard"
+msgstr ""
+
+msgctxt "ReplayDialog|Button"
 msgid "Start"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgctxt "ReplayDialog|Replay Table Column Header"
 msgid "Type"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgctxt "ReplayDialog|Replay Table Column Header"
 msgid "Name"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgctxt "ReplayDialog|Replay Table Column Header"
 msgid "Size"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Table Column Header"
+msgctxt "ReplayDialog|Replay Table Column Header"
 msgid "Date"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Type"
+msgctxt "ReplayDialog|Replay Type"
 msgid "Unknown"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Type"
+msgctxt "ReplayDialog|Replay Type"
 msgid "Freeplay"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Type"
+msgctxt "ReplayDialog|Replay Type"
 msgid "Campaign"
 msgstr ""
 
-msgctxt "LoadReplayDialog|Replay Type"
+msgctxt "ReplayDialog|Replay Type"
 msgid "Multiplayer"
+msgstr ""
+
+msgctxt "ReplayDialog|Button State Text"
+msgid "Copied!"
 msgstr ""
 
 msgctxt "ScanNetworkDialog|Window Title"
