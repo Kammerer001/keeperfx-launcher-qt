@@ -14,6 +14,8 @@
 #include <QApplication>
 #include <QTimer>
 #include <QMenu>
+#include <QShortcut>
+#include <QKeySequence>
 
 #define REPLAY_FILE_EXTENSION "fxpkt"
 
@@ -219,6 +221,14 @@ ReplayDialog::ReplayDialog(QWidget *parent)
     // Add a right click context menu to the table
     ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->tableWidget, &QTableWidget::customContextMenuRequested, this, &ReplayDialog::showContextMenu);
+
+    // Setup Ctrl+C shortcut to trigger the copy file logic
+    QShortcut *copyShortcut = new QShortcut(QKeySequence::Copy, this);
+    connect(copyShortcut, &QShortcut::activated, this, [this]() {
+        if (ui->copyButton->isEnabled()) {
+            on_copyButton_clicked();
+        }
+    });
 }
 
 ReplayDialog::~ReplayDialog()
