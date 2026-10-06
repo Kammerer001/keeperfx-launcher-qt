@@ -42,6 +42,58 @@
       <property name="font">
        <font/>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QScrollArea {
+	background-color: #2D2D2D;
+}
+
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: #2d2d2d;
+}
+
+/* Main scrollbar track */
+QScrollBar:vertical {
+    border: none;
+    background-color: #2d2d2d;
+    width: 12px; 
+    margin: 0px;
+}
+
+/* The draggable thumb (slider) */
+QScrollBar::handle:vertical {
+    background-color: #383838;
+    min-height: 30px;
+    border-radius: 6px;
+    margin: 2px;
+}
+
+/* Hover state for the draggable thumb */
+QScrollBar::handle:vertical:hover {
+    background-color: #444;
+}
+
+/* Pressed state for the draggable thumb */
+QScrollBar::handle:vertical:pressed {
+    background-color: #4E4E4E;
+}
+
+/* Hide the top and bottom arrow buttons (modern flat look) */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px; 
+}
+
+/* The track area above and below the handle */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
+      </property>
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
       </property>
@@ -53,8 +105,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>544</width>
-         <height>480</height>
+         <width>546</width>
+         <height>482</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
