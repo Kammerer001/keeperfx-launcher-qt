@@ -283,27 +283,6 @@ Note: This is not a percentage</string>
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="checkBoxDeltaTime">
-                <property name="text">
-                 <string comment="Checkbox Toggle">Enable delta time</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="checkBoxFreezeGameNoFocus">
-                <property name="text">
-                 <string comment="Checkbox Toggle">Freeze game when not focused</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="checkboxSaveReplaysEnabled">
-                <property name="text">
-                 <string comment="Checkbox Toggle">Automatically save replays</string>
-                </property>
-               </widget>
-              </item>
               <item row="3" column="0">
                <widget class="QLabel" name="labelMaxReplaysCampaign">
                 <property name="styleSheet">
@@ -395,13 +374,6 @@ Note: This is not a percentage</string>
                 </layout>
                </widget>
               </item>
-              <item row="7" column="0">
-               <widget class="QCheckBox" name="checkBoxExitOnLuaError">
-                <property name="text">
-                 <string comment="Checkbox Toggle">Exit on LUA error</string>
-                </property>
-               </widget>
-              </item>
               <item row="8" column="0">
                <widget class="QLabel" name="labelLaunchOptions">
                 <property name="text">
@@ -424,6 +396,34 @@ Note: This is not a percentage</string>
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <widget class="QCheckBox" name="checkBoxDeltaTime">
+                <property name="text">
+                 <string comment="Checkbox Toggle">Enable delta time</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <widget class="QCheckBox" name="checkBoxFreezeGameNoFocus">
+                <property name="text">
+                 <string comment="Checkbox Toggle">Freeze game when not focused</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QCheckBox" name="checkboxSaveReplaysEnabled">
+                <property name="text">
+                 <string comment="Checkbox Toggle">Automatically save replays</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="0" colspan="2">
+               <widget class="QCheckBox" name="checkBoxExitOnLuaError">
+                <property name="text">
+                 <string comment="Checkbox Toggle">Exit on LUA error</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -452,7 +452,7 @@ Note: This is not a percentage</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>842</width>
+            <width>462</width>
             <height>580</height>
            </rect>
           </property>
@@ -979,8 +979,8 @@ Full (Letterbox) = same as 'Full' but with black under the sidebar</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>856</width>
-            <height>522</height>
+            <width>82</width>
+            <height>234</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -1161,8 +1161,8 @@ Full (Letterbox) = same as 'Full' but with black under the sidebar</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>856</width>
-            <height>522</height>
+            <width>82</width>
+            <height>463</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -1432,8 +1432,8 @@ Disable this if the mouse feels off.</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>856</width>
-            <height>522</height>
+            <width>82</width>
+            <height>213</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -1608,8 +1608,8 @@ Disable this if the mouse feels off.</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>856</width>
-            <height>522</height>
+            <width>82</width>
+            <height>481</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -1862,8 +1862,8 @@ Disable this if the mouse feels off.</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>856</width>
-            <height>522</height>
+            <width>82</width>
+            <height>109</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
