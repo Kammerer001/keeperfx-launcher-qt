@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 12:56+0200\n"
+"POT-Creation-Date: 2026-10-06 21:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -963,6 +963,11 @@ msgctxt "ReplayDialog|Replay Type"
 msgid "Multiplayer"
 msgstr ""
 
+#, qt-format
+msgctxt "ReplayDialog|Replay Filesize"
+msgid "%1 KiB"
+msgstr ""
+
 msgctxt "ReplayDialog|Button State Text"
 msgid "Copied!"
 msgstr ""
@@ -1082,18 +1087,6 @@ msgid ""
 "(default = 20)"
 msgstr ""
 
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Enable delta time"
-msgstr ""
-
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Freeze game when not focused"
-msgstr ""
-
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Automatically save replays"
-msgstr ""
-
 msgctxt "SettingsDialog|"
 msgid "Campaign max. replays"
 msgstr ""
@@ -1117,12 +1110,24 @@ msgctxt "SettingsDialog|Measurement Unit Label"
 msgid "KiB"
 msgstr ""
 
-msgctxt "SettingsDialog|Checkbox Toggle"
-msgid "Exit on LUA error"
-msgstr ""
-
 msgctxt "SettingsDialog|Textinput Title Label"
 msgid "Game launch options"
+msgstr ""
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Enable delta time"
+msgstr ""
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Freeze game when not focused"
+msgstr ""
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Automatically save replays"
+msgstr ""
+
+msgctxt "SettingsDialog|Checkbox Toggle"
+msgid "Exit on LUA error"
 msgstr ""
 
 msgctxt "SettingsDialog|Tab Title"
