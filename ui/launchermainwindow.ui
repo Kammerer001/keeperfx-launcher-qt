@@ -69,12 +69,12 @@ QScrollBar::handle:vertical {
 
 /* Hover state for the draggable thumb */
 QScrollBar::handle:vertical:hover {
-    background-color: #444;
+    background-color: #404040;
 }
 
 /* Pressed state for the draggable thumb */
 QScrollBar::handle:vertical:pressed {
-    background-color: #4E4E4E;
+    background-color: #454545;
 }
 
 /* Hide the top and bottom arrow buttons (modern flat look) */
