@@ -790,7 +790,7 @@ msgstr "Prototipiale"
 
 msgctxt "KfxVersion|Release Type"
 msgid "Development"
-msgstr "Sviluppando"
+msgstr "In sviluppo"
 
 msgctxt "LauncherMainWindow|"
 msgid "KeeperFX Launcher"
